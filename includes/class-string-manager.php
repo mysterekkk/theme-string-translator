@@ -141,27 +141,22 @@ class TST_String_Manager {
 		$where_clause = implode( ' AND ', $where );
 
 		// Get total count.
-		if ( ! empty( $values ) ) {
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$count_sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$this->table_name} WHERE {$where_clause}", $values );
-		} else {
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$count_sql = "SELECT COUNT(*) FROM {$this->table_name} WHERE {$where_clause}";
-		}
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
-		$total = (int) $wpdb->get_var( $count_sql );
-
-		// Get paginated results.
 		$offset   = ( absint( $args['page'] ) - 1 ) * absint( $args['per_page'] );
 		$per_page = absint( $args['per_page'] );
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
+		$total = (int) $wpdb->get_var(
+			$wpdb->prepare( "SELECT COUNT(*) FROM {$this->table_name} WHERE " . implode( ' AND ', $where ), $values ) // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+		);
+
+		// Get paginated results.
 		$values[] = $per_page;
 		$values[] = $offset;
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$results_sql = $wpdb->prepare( "SELECT * FROM {$this->table_name} WHERE {$where_clause} ORDER BY id DESC LIMIT %d OFFSET %d", $values );
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
-		$items = $wpdb->get_results( $results_sql );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
+		$items = $wpdb->get_results(
+			$wpdb->prepare( "SELECT * FROM {$this->table_name} WHERE " . implode( ' AND ', $where ) . " ORDER BY id DESC LIMIT %d OFFSET %d", $values ) // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
+		);
 
 		return array(
 			'items' => $items,
@@ -277,15 +272,15 @@ class TST_String_Manager {
 	public function get_stats() {
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$by_status = $wpdb->get_results(
-			"SELECT status, COUNT(*) as count FROM {$this->table_name} GROUP BY status",
+			"SELECT status, COUNT(*) as count FROM {$this->table_name} GROUP BY status", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			OBJECT_K
 		);
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$by_source_type = $wpdb->get_results(
-			"SELECT source_type, COUNT(*) as count FROM {$this->table_name} GROUP BY source_type",
+			"SELECT source_type, COUNT(*) as count FROM {$this->table_name} GROUP BY source_type", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			OBJECT_K
 		);
 
