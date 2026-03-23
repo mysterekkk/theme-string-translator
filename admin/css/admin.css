@@ -1,0 +1,67 @@
+/**
+ * Theme String Translator - Admin Styles
+ *
+ * Minimal styles for the admin interface.
+ *
+ * @package Theme_String_Translator
+ * @since   1.0.0
+ */
+
+.tst-wrap {
+	max-width: 1200px;
+	margin: 20px auto;
+}
+
+.tst-status-badge {
+	display: inline-flex;
+	align-items: center;
+	padding: 2px 8px;
+	border-radius: 9999px;
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 1.5;
+}
+
+.tst-status-translated {
+	background: #d1fae5;
+	color: #065f46;
+}
+
+.tst-status-partial {
+	background: #fef3c7;
+	color: #92400e;
+}
+
+.tst-status-untranslated {
+	background: #f3f4f6;
+	color: #6b7280;
+}
+
+.tst-string-input {
+	width: 100%;
+	padding: 6px 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 14px;
+	line-height: 1.4;
+	transition: border-color 0.2s;
+}
+
+.tst-string-input:focus {
+	border-color: #3b82f6;
+	outline: none;
+	box-shadow: 0 0 0 1px #3b82f6;
+}
+
+.tst-progress-bar {
+	height: 4px;
+	background: #e5e7eb;
+	border-radius: 2px;
+	overflow: hidden;
+}
+
+.tst-progress-fill {
+	height: 100%;
+	background: #3b82f6;
+	transition: width 0.3s ease;
+}

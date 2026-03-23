@@ -1,0 +1,12 @@
+{
+  "name": "theme-string-translator",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "wp-scripts build admin/src/index.tsx --output-path=admin/js",
+    "start": "wp-scripts start admin/src/index.tsx --output-path=admin/js"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^27.0.0"
+  }
+}
