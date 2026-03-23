@@ -1,8 +1,8 @@
 === Theme String Translator ===
 Contributors: luroweb
-Tags: translation, i18n, theme, localization, gettext, woocommerce, acf
+Tags: translation, i18n, theme, localization, woocommerce
 Requires at least: 5.6
-Tested up to: 6.7
+Tested up to: 6.9
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later

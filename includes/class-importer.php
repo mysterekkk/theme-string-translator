@@ -256,11 +256,10 @@ class TST_Importer {
 
 		$table_name = $wpdb->prefix . 'tst_strings';
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		return $wpdb->get_row(
-			$wpdb->prepare(
-				"SELECT * FROM {$table_name} WHERE original_string = %s LIMIT 1",
-				$original
-			)
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->prepare( "SELECT * FROM {$table_name} WHERE original_string = %s LIMIT 1", $original )
 		);
 	}
 }

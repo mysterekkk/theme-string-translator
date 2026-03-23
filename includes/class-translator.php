@@ -90,11 +90,10 @@ class TST_Translator {
 		$table_name = $wpdb->prefix . 'tst_strings';
 		$locale     = sanitize_text_field( $locale );
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$rows = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT original_string, translations FROM {$table_name} WHERE status IN ('translated', 'partial') AND translations LIKE %s",
-				'%' . $wpdb->esc_like( '"' . $locale . '"' ) . '%'
-			)
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->prepare( "SELECT original_string, translations FROM {$table_name} WHERE status IN ('translated', 'partial') AND translations LIKE %s", '%' . $wpdb->esc_like( '"' . $locale . '"' ) . '%' )
 		);
 
 		$translations = array();

@@ -102,9 +102,6 @@ class TST_Plugin {
 	 * @since 1.0.0
 	 */
 	private function __construct() {
-		// Load text domain.
-		load_plugin_textdomain( 'theme-string-translator', false, dirname( TST_PLUGIN_BASENAME ) . '/languages' );
-
 		// Initialize core components.
 		$this->string_manager = new TST_String_Manager();
 		$this->translator     = new TST_Translator( $this->string_manager );

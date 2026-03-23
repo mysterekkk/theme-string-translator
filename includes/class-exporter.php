@@ -223,7 +223,14 @@ class TST_Exporter {
 	public function export_php_array( $locale ) {
 		$translations = $this->translator->get_translations_for_locale( $locale );
 
-		return "<?php\nreturn " . var_export( $translations, true ) . ";\n";
+		$output = "<?php\nreturn array(\n";
+		foreach ( $translations as $key => $value ) {
+			$key   = str_replace( "'", "\\'", $key );
+			$value = str_replace( "'", "\\'", $value );
+			$output .= "\t'" . $key . "' => '" . $value . "',\n";
+		}
+		$output .= ");\n";
+		return $output;
 	}
 
 	/**

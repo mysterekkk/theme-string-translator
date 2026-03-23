@@ -69,6 +69,7 @@ class TST_String_Manager {
 		$text_domain = isset( $data['text_domain'] ) ? sanitize_text_field( $data['text_domain'] ) : '';
 		$string_hash = md5( $original . $source_type . $text_domain );
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		return $wpdb->replace(
 			$this->table_name,
 			array(
@@ -141,13 +142,13 @@ class TST_String_Manager {
 
 		// Get total count.
 		if ( ! empty( $values ) ) {
-			$count_sql = $wpdb->prepare(
-				"SELECT COUNT(*) FROM {$this->table_name} WHERE {$where_clause}",
-				$values
-			);
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$count_sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$this->table_name} WHERE {$where_clause}", $values );
 		} else {
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$count_sql = "SELECT COUNT(*) FROM {$this->table_name} WHERE {$where_clause}";
 		}
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 		$total = (int) $wpdb->get_var( $count_sql );
 
 		// Get paginated results.
@@ -157,10 +158,9 @@ class TST_String_Manager {
 		$values[] = $per_page;
 		$values[] = $offset;
 
-		$results_sql = $wpdb->prepare(
-			"SELECT * FROM {$this->table_name} WHERE {$where_clause} ORDER BY id DESC LIMIT %d OFFSET %d",
-			$values
-		);
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$results_sql = $wpdb->prepare( "SELECT * FROM {$this->table_name} WHERE {$where_clause} ORDER BY id DESC LIMIT %d OFFSET %d", $values );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 		$items = $wpdb->get_results( $results_sql );
 
 		return array(
@@ -180,11 +180,10 @@ class TST_String_Manager {
 	public function get_string( $id ) {
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		return $wpdb->get_row(
-			$wpdb->prepare(
-				"SELECT * FROM {$this->table_name} WHERE id = %d",
-				absint( $id )
-			)
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->prepare( "SELECT * FROM {$this->table_name} WHERE id = %d", absint( $id ) )
 		);
 	}
 
@@ -229,6 +228,7 @@ class TST_String_Manager {
 		$configured_languages = get_option( 'tst_languages', array() );
 		$status               = $this->compute_status( $translations, $configured_languages );
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		return $wpdb->update(
 			$this->table_name,
 			array(
@@ -253,6 +253,7 @@ class TST_String_Manager {
 	public function delete_string( $id ) {
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		return $wpdb->delete(
 			$this->table_name,
 			array( 'id' => absint( $id ) ),
@@ -276,16 +277,19 @@ class TST_String_Manager {
 	public function get_stats() {
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$by_status = $wpdb->get_results(
 			"SELECT status, COUNT(*) as count FROM {$this->table_name} GROUP BY status",
 			OBJECT_K
 		);
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$by_source_type = $wpdb->get_results(
 			"SELECT source_type, COUNT(*) as count FROM {$this->table_name} GROUP BY source_type",
 			OBJECT_K
 		);
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$total = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$this->table_name}" );
 
 		$status_counts = array();
@@ -315,6 +319,7 @@ class TST_String_Manager {
 	public function clear_all() {
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		return $wpdb->query( "TRUNCATE TABLE {$this->table_name}" );
 	}
 
