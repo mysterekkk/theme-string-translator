@@ -7,6 +7,7 @@
     "start": "wp-scripts start admin/src/index.tsx --output-path=admin/js"
   },
   "devDependencies": {
-    "@wordpress/scripts": "^27.0.0"
+    "@wordpress/scripts": "^27.0.0",
+    "sharp": "^0.34.5"
   }
 }

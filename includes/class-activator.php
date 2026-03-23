@@ -47,7 +47,7 @@ class TST_Activator {
 			source_line int(11) NOT NULL DEFAULT 0,
 			text_domain varchar(100) NOT NULL DEFAULT '',
 			context varchar(255) NOT NULL DEFAULT '',
-			translations longtext NOT NULL DEFAULT '',
+			translations longtext,
 			status varchar(20) NOT NULL DEFAULT 'untranslated',
 			created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
